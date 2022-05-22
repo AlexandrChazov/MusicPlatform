@@ -9,21 +9,22 @@ export class TrackController {
 
   @Post()
   create(@Body() dto: CreateTrackDto) {
-    return this.trackService.create(dto)
+    return this.trackService.create(dto);
   }
 
   @Get()
   getAll() {
-    return this.trackService.getAll()
+    return this.trackService.getAll();
   }
 
   @Get(':id')
   getOne(@Param('id') id: number) {
-    return this.trackService.getOne(id)
+    return this.trackService.getOne(id);
   }
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return this.trackService.delete(id)
+    return this.trackService.delete(id);
   }
+
 }

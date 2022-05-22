@@ -25,9 +25,9 @@ export class TrackService {
     return track;
   }
 
-  async delete(id: number): Promise<Track> {
+  async delete(id: number): Promise<number> {
     const track = await this.trackRepository.findByPk(id)
     await this.trackRepository.destroy({ where: { id }})
-    return track;
+    return track.id;
   }
 }

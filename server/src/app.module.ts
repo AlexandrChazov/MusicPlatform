@@ -3,10 +3,13 @@ import { TrackModule } from "./track/track.module";
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from "@nestjs/config";
 import {Track} from "./track/track.model";
+import {Comment} from "./comment/comment.model";
+import {CommentModule} from "./comment/comment.module";
 
 @Module({
   imports: [
     TrackModule,
+    CommentModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
@@ -18,7 +21,8 @@ import {Track} from "./track/track.model";
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       models: [
-        Track
+        Track,
+        Comment
       ],
       autoLoadModels: true // чтобы Sequelize автоматически создавал таблицы в БД на основании моделей, которые мы передали выше
     }),
