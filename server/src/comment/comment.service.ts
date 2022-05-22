@@ -9,7 +9,7 @@ export class CommentService {
 
   constructor(
     @InjectModel(Comment) private commentRepository: typeof Comment,
-    private trackService: TrackService
+    private trackService: TrackService,
   ) {}
 
   async addComment(dto: CreateCommentDto): Promise<Comment> {
@@ -19,5 +19,10 @@ export class CommentService {
     }
     const comment = await this.commentRepository.create(dto)
     return comment;
+  }
+
+  async findComments(id: number): Promise<Comment[]> {
+    const comments = await this.commentRepository.findAll({ where: { trackId: id } });
+    return comments;
   }
 }

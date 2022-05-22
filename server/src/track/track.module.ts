@@ -8,8 +8,10 @@ import { Track } from "./track.model";
   controllers: [TrackController],
   providers: [TrackService],
   imports: [
-    SequelizeModule.forFeature([Track])
+    SequelizeModule.forFeature([Track]),
   ],
-  exports: [TrackService]
+  exports: [
+    TrackService
+  ]
 })
 export class TrackModule {}

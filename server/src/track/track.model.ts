@@ -1,4 +1,4 @@
-import {Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { Comment } from "../comment/comment.model";
 
 interface TrackCreationAttrs {

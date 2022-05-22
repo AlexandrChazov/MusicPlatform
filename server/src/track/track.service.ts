@@ -1,7 +1,7 @@
-import {Injectable} from "@nestjs/common";
-import {InjectModel} from "@nestjs/sequelize";
-import {Track} from "./track.model";
-import {CreateTrackDto} from "./dto/create-track.dto";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { Track } from "./track.model";
+import { CreateTrackDto } from "./dto/create-track.dto";
 
 @Injectable()
 export class TrackService {
@@ -21,8 +21,11 @@ export class TrackService {
   }
 
   async getOne(id: number): Promise<Track> {
-    const track = await this.trackRepository.findByPk(id);
-    return track;
+    const track = await this.trackRepository.findOne({ where: { id }, include: { all: true } })
+    if (!track) {
+      throw new HttpException("Track not found", HttpStatus.NOT_FOUND)
+    }
+    return track
   }
 
   async delete(id: number): Promise<number> {
