@@ -1,17 +1,25 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { Track } from "./track.model";
-import { CreateTrackDto } from "./dto/create-track.dto";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {InjectModel} from "@nestjs/sequelize";
+import {Track} from "./track.model";
+import {CreateTrackDto} from "./dto/create-track.dto";
+import {FileService, FileType} from "../file/file.service";
 
 @Injectable()
 export class TrackService {
 
   constructor(
-    @InjectModel(Track) private trackRepository: typeof Track
+    @InjectModel(Track) private trackRepository: typeof Track,
+    private fileService: FileService
   ) {}
 
-  async create(dto: CreateTrackDto): Promise<Track> {
-    const track = await this.trackRepository.create(dto);
+  async create(dto: CreateTrackDto, picture, audio): Promise<Track> {
+    const audioPath = this.fileService.createFile(FileType.AUDIO, audio);
+    const imagePath = this.fileService.createFile(FileType.IMAGE, picture);
+    const track = await this.trackRepository.create({
+      ...dto,
+      audio: audioPath,
+      picture: imagePath
+    });
     return track;
   }
 

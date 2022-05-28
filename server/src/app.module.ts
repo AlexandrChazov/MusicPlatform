@@ -5,11 +5,15 @@ import { Track } from "./track/track.model";
 import { Comment } from "./comment/comment.model";
 import { TrackModule } from "./track/track.module";
 import { CommentModule } from "./comment/comment.module";
+import { FileModule } from "./file/file.module";
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
     TrackModule,
     CommentModule,
+    FileModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
@@ -25,6 +29,9 @@ import { CommentModule } from "./comment/comment.module";
         Comment
       ],
       autoLoadModels: true // чтобы Sequelize автоматически создавал таблицы в БД на основании моделей, которые мы передали выше
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static')
     }),
   ]
 })
