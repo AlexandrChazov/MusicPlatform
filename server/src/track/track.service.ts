@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Track} from "./track.model";
 import {CreateTrackDto} from "./dto/create-track.dto";
 import {FileService, FileType} from "../file/file.service";
+import { Op } from "sequelize";
 
 @Injectable()
 export class TrackService {
@@ -23,8 +24,8 @@ export class TrackService {
     return track;
   }
 
-  async getAll(): Promise<Track[]> {
-    const tracks = await this.trackRepository.findAll();
+  async getAll(limit: number, offset: number): Promise<Track[]> {
+    const tracks = await this.trackRepository.findAll({ limit, offset });
     return tracks;
   }
 
@@ -40,5 +41,26 @@ export class TrackService {
     const track = await this.trackRepository.findByPk(id)
     await this.trackRepository.destroy({ where: { id }})
     return track.id;
+  }
+
+  async listen(id: number): Promise<number> {
+    const track = await this.trackRepository.findByPk(id)
+    if (!track) {
+      throw new HttpException('File not found', HttpStatus.NOT_FOUND)
+    }
+    ++track.listens;
+    await track.save();
+    return track.listens;
+  }
+
+  async search(query: string): Promise<Track[]> {
+    const tracks = await this.trackRepository.findAll({
+      where: {
+        name: {
+          [Op.iLike]: '%' + query + '%'
+        }
+      }
+    });
+    return tracks;
   }
 }

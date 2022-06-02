@@ -12,7 +12,7 @@ export class CommentController {
     return this.commentService.addComment(dto)
   }
 
-  @Get(':id')
+  @Get('/:id')
   findComments(@Param('id') id: number) {
     return this.commentService.findComments(id)
   }
