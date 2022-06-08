@@ -56,9 +56,18 @@ export class TrackService {
   async search(query: string): Promise<Track[]> {
     const tracks = await this.trackRepository.findAll({
       where: {
-        name: {
-          [Op.iLike]: '%' + query + '%'
-        }
+        [Op.or]: [
+          {
+            name: {
+              [Op.iLike]: '%' + query + '%'
+            }
+          },
+          {
+            artist: {
+              [Op.iLike]: '%' + query + '%'
+            }
+          }
+        ]
       }
     });
     return tracks;
