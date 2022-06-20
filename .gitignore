@@ -4,6 +4,7 @@ server/node_modules
 server/.development.env
 server/.production.env
 
+client/node_modules
 # Logs
 logs
 *.log
